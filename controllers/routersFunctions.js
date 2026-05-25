@@ -4,29 +4,43 @@ import { idCheck } from "../functions/function.js";
 
 
 export function index(request, response) {
-    response.json(posts);
+
+    if (!posts || posts.length === 0) {
+        response
+            .status(404)
+            .json({
+                error: "nessun post é stato trovato",
+                result: null
+            });
+    }
+
+    response.json({
+        error: null,
+        result: posts
+    });
+
 }
 
 export function show(request, response) {
     const id = Number(request.params.id.trim());
-    if(!idCheck(id)){
+    if (!idCheck(id)) {
         response
-            .status(404)
+            .status(400)
             .json({
                 error: "l'ID passato non é valido, Deve essere un numero intero maggiore di zero.",
                 result: null
             });
-            return
+        return
     };
     const post = posts.find(post => post.id === id);
-    if (!post){
+    if (!post) {
         response
             .status(404)
             .json({
                 error: "Il post non esiste",
                 result: null
             });
-            return
+        return
     }
     response.json({
         error: null,
@@ -50,5 +64,33 @@ export function modify(request, response) {
 
 export function destroy(request, response) {
     const id = Number(request.params.id);
-    response.json(`richiesta per rimuovere il post con l'id:${id}`);
+    if (!idCheck(id)) {
+        response
+            .status(400)
+            .json({
+                error: "l'ID passato non é valido, Deve essere un numero intero maggiore di zero.",
+                result: null
+            });
+        return
+    };
+
+    const postIndex = posts.findIndex(post => post.id === id);
+    if (postIndex === -1) {
+        response
+            .status(404)
+            .json({
+                error: "il post che stai cercando di eliminare non esiste",
+                result: null
+            });
+        return
+    }
+
+    posts.splice(postIndex,1);
+    console.log(posts)
+    response
+        .json({
+            error: null,
+            result: 'il post é stato eliminato con successo'
+            });
+    return
 }
