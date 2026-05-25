@@ -5,18 +5,37 @@ import { idCheck } from "../functions/function.js";
 
 export function index(request, response) {
 
-    if (!posts || posts.length === 0) {
+    const {tag, maxPrepTime} = request.query;
+
+    const maxPrepTimeChecked = Number(maxPrepTime);
+
+    
+    let filtredPosts = [...posts];
+    
+    if ( tag!==undefined ){
+        const searchTag = tag.toLowerCase();
+        filtredPosts = filtredPosts.filter(post => post.tags.map(tag => tag.toLowerCase()).includes(searchTag));
+    }
+    if (!isNaN(maxPrepTimeChecked)){
+        filtredPosts = filtredPosts.filter(post => post.prep_time <= maxPrepTimeChecked);
+    }
+    
+    
+    
+    if (!filtredPosts || filtredPosts.length === 0) {
         response
             .status(404)
             .json({
                 error: "nessun post é stato trovato",
                 result: null
             });
+        return
     }
+    
 
     response.json({
         error: null,
-        result: posts
+        result: filtredPosts
     });
 
 }
