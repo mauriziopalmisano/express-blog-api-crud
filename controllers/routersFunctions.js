@@ -2,7 +2,9 @@ import { posts } from "../data/ricettePosts.js";
 import { idCheck } from "../functions/function.js";
 
 
-
+/*---------------------------------------------------------------------
+INDEX
+---------------------------------------------------------------------*/
 export function index(request, response) {
 
     const {tag, maxPrepTime} = request.query;
@@ -40,6 +42,11 @@ export function index(request, response) {
 
 }
 
+
+
+/*---------------------------------------------------------------------
+SHOW
+---------------------------------------------------------------------*/
 export function show(request, response) {
     const id = Number(request.params.id.trim());
     if (!idCheck(id)) {
@@ -67,20 +74,49 @@ export function show(request, response) {
     });
 }
 
+
+
+/*---------------------------------------------------------------------
+STORE
+---------------------------------------------------------------------*/
 export function store(request, response) {
-    response.json('richiesta di aggiungere un post');
+
+    const receivedData = request.body
+
+
+    response.json({
+        message: 'tentativo di creazione di dati',
+        result: receivedData
+    });
 }
 
+
+
+/*---------------------------------------------------------------------
+UPDATE
+---------------------------------------------------------------------*/
 export function update(request, response) {
     const id = Number(request.params.id);
     response.json(`richiesta per aggiornare il post con l'id:${id}`);
 }
 
+
+
+
+/*---------------------------------------------------------------------
+MODIFY
+---------------------------------------------------------------------*/
 export function modify(request, response) {
     const id = Number(request.params.id);
     response.json(`richiesta di modificare parti del post con l'id:${id}`);
 }
 
+
+
+
+/*---------------------------------------------------------------------
+DESTROY
+---------------------------------------------------------------------*/
 export function destroy(request, response) {
     const id = Number(request.params.id);
     if (!idCheck(id)) {

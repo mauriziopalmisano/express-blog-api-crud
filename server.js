@@ -6,7 +6,7 @@ const SERVER_URL =process.env.SERVER_URL;
 
 
 const app = express();
-
+app.use(express.json()); // Utile per le richieste application/json
 app.use('/posts', post);
 
 
