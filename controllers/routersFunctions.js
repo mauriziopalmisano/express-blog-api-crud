@@ -75,7 +75,7 @@ export function store(request, response) {
 
     const receivedData = request.body || {};
 
-    if (!OBJcheck(receivedData)){
+    if (!OBJcheck(receivedData)) {
         response
             .status(400)
             .json({
@@ -84,18 +84,18 @@ export function store(request, response) {
             })
         return
     }
-    
-    const newPost = {...defaultOBJ,...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString()}
-    
+
+    const newPost = { ...defaultOBJ, ...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString() }
+
     posts.push(newPost);
-    
-    
+
+
     response
         .status(201)
         .json({
-        message: 'Post aggiunto con successo',
-        result: posts
-    });
+            message: 'Post aggiunto con successo',
+            result: posts
+        });
 }
 
 
@@ -105,8 +105,50 @@ UPDATE
 ---------------------------------------------------------------------*/
 export function update(request, response) {
     const id = Number(request.params.id);
-    response.json(`richiesta per aggiornare il post con l'id:${id}`);
+
+    if (!idCheck(id)) {
+        response
+            .status(400)
+            .json({
+                error: "l'ID passato non é valido, Deve essere un numero intero maggiore di zero.",
+                result: null
+            });
+        return
+    };
+    const postIndex = posts.findIndex(post => post.id === id);
+    if (postIndex === -1) {
+        response
+            .status(404)
+            .json({
+                error: "il post che stai cercando di aggiornare non esiste",
+                result: null
+            });
+        return
+    }
+
+    const post = posts[postIndex];
+    const receivedData = request.body || {};
+
+    if (!OBJcheck(receivedData)) {
+        response
+            .status(400)
+            .json({
+                error: "l'ogetto passato non rispetta i parametri richiesti",
+                result: null
+            })
+        return
+    }
+
+    const updatedPost = { ...post, ...receivedData };
+    posts.splice(postIndex, 1, updatedPost);
+
+    response
+        .json({
+            error: null,
+            result: 'il post é stato aggiornato con successo'
+        });
 }
+
 
 
 
@@ -149,11 +191,9 @@ export function destroy(request, response) {
     }
 
     posts.splice(postIndex, 1);
-    console.log(posts)
     response
         .json({
             error: null,
             result: 'il post é stato eliminato con successo'
         });
-    return
 }
