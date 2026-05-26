@@ -1,5 +1,5 @@
 import { posts } from "../data/ricettePosts.js";
-import { idCheck, objKeysCheck } from "../functions/function.js";
+import { idCheck, OBJcheck } from "../functions/function.js";
 
 
 /*---------------------------------------------------------------------
@@ -83,7 +83,7 @@ export function store(request, response) {
 
     const receivedData = request.body || {};
 
-    if (!objKeysCheck(receivedData)){
+    if (!OBJcheck(receivedData)){
         response
             .status(400)
             .json({
@@ -92,7 +92,7 @@ export function store(request, response) {
             })
         return
     }
-    
+
 
     response.json({
         message: 'tentativo di creazione di dati',

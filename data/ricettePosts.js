@@ -67,19 +67,19 @@ export const posts = [
 export const defaultOBJ = {
   id: null,
   title: "",
-  content: null,
+  content: "",
   image: "",
   tags: [],
   slug: "",
   published: false,
   prep_time: "",
-  created_at: null
+  created_at: ""
 };
 
 export const defaultOBJReceived = {
   title: "",
-  content: null,
+  content: "",
   image: "",
   tags: [],
-  prep_time: ""
+  prep_time: null
 };
