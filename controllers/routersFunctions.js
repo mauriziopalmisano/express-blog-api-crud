@@ -1,5 +1,5 @@
 import { posts } from "../data/ricettePosts.js";
-import { idCheck } from "../functions/function.js";
+import { idCheck, objKeysCheck } from "../functions/function.js";
 
 
 /*---------------------------------------------------------------------
@@ -81,8 +81,18 @@ STORE
 ---------------------------------------------------------------------*/
 export function store(request, response) {
 
-    const receivedData = request.body || { error: "i dati non sono stati passati correttamente" }
+    const receivedData = request.body || {};
 
+    if (!objKeysCheck(receivedData)){
+        response
+            .status(400)
+            .json({
+                error: "l'ogetto passato non rispetta i parametri richiesti",
+                result: null
+            })
+        return
+    }
+    
 
     response.json({
         message: 'tentativo di creazione di dati',
