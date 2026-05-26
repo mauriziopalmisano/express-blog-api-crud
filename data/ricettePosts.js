@@ -71,7 +71,7 @@ export const defaultOBJ = {
   image: "",
   tags: [],
   slug: "",
-  published: false,
+  published: true,
   prep_time: "",
   created_at: ""
 };

@@ -1,5 +1,6 @@
 import { posts } from "../data/ricettePosts.js";
-import { idCheck, OBJcheck } from "../functions/function.js";
+import { idCheck, idGenerator, OBJcheck, slugGenerator } from "../functions/function.js";
+import { defaultOBJ } from "../data/ricettePosts.js";
 
 
 /*---------------------------------------------------------------------
@@ -8,12 +9,8 @@ INDEX
 export function index(request, response) {
 
     const { tag, maxPrepTime } = request.query;
-
     const maxPrepTimeChecked = Number(maxPrepTime.trim());
-
-
     let filtredPosts = [...posts];
-
     if (tag !== undefined) {
         const searchTag = tag.toLowerCase();
         filtredPosts = filtredPosts.filter(post => post.tags.map(tag => tag.toLowerCase()).includes(searchTag));
@@ -21,9 +18,6 @@ export function index(request, response) {
     if (!isNaN(maxPrepTimeChecked)) {
         filtredPosts = filtredPosts.filter(post => post.prep_time <= maxPrepTimeChecked);
     }
-
-
-
     if (!filtredPosts || filtredPosts.length === 0) {
         response
             .status(404)
@@ -33,8 +27,6 @@ export function index(request, response) {
             });
         return
     }
-
-
     response.json({
         error: null,
         result: filtredPosts
@@ -92,11 +84,17 @@ export function store(request, response) {
             })
         return
     }
-
-
-    response.json({
-        message: 'tentativo di creazione di dati',
-        result: receivedData
+    
+    const newPost = {...defaultOBJ,...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString()}
+    
+    posts.push(newPost);
+    
+    
+    response
+        .status(201)
+        .json({
+        message: 'Post aggiunto con successo',
+        result: posts
     });
 }
 

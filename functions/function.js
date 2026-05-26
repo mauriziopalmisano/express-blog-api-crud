@@ -1,4 +1,4 @@
-import { defaultOBJ, defaultOBJReceived } from "../data/ricettePosts";
+import { defaultOBJReceived, posts } from "../data/ricettePosts.js";
 
 
 export const idCheck = (id) => {
@@ -34,4 +34,27 @@ const objvaluescheck = (obj) => {
 export const OBJcheck = (obj) => {
     if(!objKeysCheck(obj)) return false;
     return objvaluescheck(obj);
+}
+
+export const idGenerator = () => {
+    const lastElementID = posts[posts.length-1].id;
+    let newID = lastElementID
+
+    do {
+        newID++;
+    } while (posts.some(post => post.id === newID));
+
+    return newID;
+}
+
+export const slugGenerator = (obj) => {
+    let slug = obj.title.replaceAll(' ', '-').toLowerCase();
+    let counter = 0 ;
+    
+
+    do {
+        slug = counter === 0 ? slug : slug + `-${counter}`;
+        counter++;
+    } while (posts.some(posts => posts.slug === slug));
+    return slug;
 }
