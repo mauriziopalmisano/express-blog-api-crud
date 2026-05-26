@@ -7,23 +7,23 @@ INDEX
 ---------------------------------------------------------------------*/
 export function index(request, response) {
 
-    const {tag, maxPrepTime} = request.query;
+    const { tag, maxPrepTime } = request.query;
 
-    const maxPrepTimeChecked = Number(maxPrepTime);
+    const maxPrepTimeChecked = Number(maxPrepTime.trim());
 
-    
+
     let filtredPosts = [...posts];
-    
-    if ( tag!==undefined ){
+
+    if (tag !== undefined) {
         const searchTag = tag.toLowerCase();
         filtredPosts = filtredPosts.filter(post => post.tags.map(tag => tag.toLowerCase()).includes(searchTag));
     }
-    if (!isNaN(maxPrepTimeChecked)){
+    if (!isNaN(maxPrepTimeChecked)) {
         filtredPosts = filtredPosts.filter(post => post.prep_time <= maxPrepTimeChecked);
     }
-    
-    
-    
+
+
+
     if (!filtredPosts || filtredPosts.length === 0) {
         response
             .status(404)
@@ -33,7 +33,7 @@ export function index(request, response) {
             });
         return
     }
-    
+
 
     response.json({
         error: null,
@@ -81,7 +81,7 @@ STORE
 ---------------------------------------------------------------------*/
 export function store(request, response) {
 
-    const receivedData = request.body
+    const receivedData = request.body || { error: "i dati non sono stati passati correttamente" }
 
 
     response.json({
@@ -140,12 +140,12 @@ export function destroy(request, response) {
         return
     }
 
-    posts.splice(postIndex,1);
+    posts.splice(postIndex, 1);
     console.log(posts)
     response
         .json({
             error: null,
             result: 'il post é stato eliminato con successo'
-            });
+        });
     return
 }
