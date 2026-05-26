@@ -1,5 +1,5 @@
 import { posts } from "../data/ricettePosts.js";
-import { idCheck, idGenerator, OBJcheck, slugGenerator } from "../functions/function.js";
+import { idCheck, idGenerator, OBJcheck, slugCheck, slugGenerator } from "../functions/function.js";
 import { defaultOBJ } from "../data/ricettePosts.js";
 
 
@@ -40,7 +40,7 @@ export function index(request, response) {
 SHOW
 ---------------------------------------------------------------------*/
 export function show(request, response) {
-    const id = Number(request.params.id.trim());
+    /* const id = Number(request.params.id.trim());
     if (!idCheck(id)) {
         response
             .status(400)
@@ -49,9 +49,12 @@ export function show(request, response) {
                 result: null
             });
         return
-    };
-    const post = posts.find(post => post.id === id);
-    if (!post) {
+    }; */
+
+    const slug = request.params.slug.trim();
+
+    const post = posts.find(post => post.slug === slug);
+    if (post === undefined) {
         response
             .status(404)
             .json({
@@ -104,9 +107,9 @@ export function store(request, response) {
 UPDATE
 ---------------------------------------------------------------------*/
 export function update(request, response) {
-    const id = Number(request.params.id);
+    //const id = Number(request.params.id);
 
-    if (!idCheck(id)) {
+    /* if (!idCheck(id)) {
         response
             .status(400)
             .json({
@@ -114,8 +117,12 @@ export function update(request, response) {
                 result: null
             });
         return
-    };
-    const postIndex = posts.findIndex(post => post.id === id);
+    }; */
+    
+    const slug = request.params.slug.trim();
+
+
+    const postIndex = posts.findIndex(post => post.slug === slug);
     if (postIndex === -1) {
         response
             .status(404)
@@ -159,8 +166,9 @@ export function update(request, response) {
 MODIFY
 ---------------------------------------------------------------------*/
 export function modify(request, response) {
-    const id = Number(request.params.id);
-    response.json(`richiesta di modificare parti del post con l'id:${id}`);
+    //const id = Number(request.params.id);
+    const slug = request.params.slug.trim();
+    response.json(`richiesta di modificare parti del post con lo slug ${slug}`);
 }
 
 
@@ -170,7 +178,7 @@ export function modify(request, response) {
 DESTROY
 ---------------------------------------------------------------------*/
 export function destroy(request, response) {
-    const id = Number(request.params.id);
+/*     const id = Number(request.params.id);
     if (!idCheck(id)) {
         response
             .status(400)
@@ -179,9 +187,11 @@ export function destroy(request, response) {
                 result: null
             });
         return
-    };
+    }; */
 
-    const postIndex = posts.findIndex(post => post.id === id);
+    const slug = request.params.slug.trim();
+
+    const postIndex = posts.findIndex(post => post.slug === slug);
     if (postIndex === -1) {
         response
             .status(404)
