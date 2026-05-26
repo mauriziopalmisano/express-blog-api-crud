@@ -16,7 +16,7 @@ const objKeysCheck = (obj) => {
 }
 
 const objvaluescheck = (obj) => {
-    const {title, content, image, tags, prep_time} = obj;
+    const { title, content, image, tags, prep_time } = obj;
 
     if (typeof title !== 'string' || title.trim() === '') return false;
     if (typeof content !== 'string' || content.trim() === '') return false;
@@ -43,7 +43,6 @@ export const idGenerator = () => {
     do {
         newID++;
     } while (posts.some(post => post.id === newID));
-
     return newID;
 }
 
@@ -51,7 +50,6 @@ export const slugGenerator = (obj) => {
     let slug = obj.title.replaceAll(' ', '-').toLowerCase();
     let counter = 0 ;
     
-
     do {
         slug = counter === 0 ? slug : slug + `-${counter}`;
         counter++;

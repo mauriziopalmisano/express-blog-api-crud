@@ -138,8 +138,10 @@ export function update(request, response) {
             })
         return
     }
-
     const updatedPost = { ...post, ...receivedData };
+    if (post.title !== updatedPost.title){
+        updatedPost.slug = slugGenerator(updatedPost);
+    }
     posts.splice(postIndex, 1, updatedPost);
 
     response
