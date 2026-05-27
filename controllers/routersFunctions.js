@@ -50,19 +50,6 @@ export function show(request, response) {
             });
         return
     }; */
-
-    const slug = request.params.slug.trim();
-
-    const post = posts.find(post => post.slug === slug);
-    if (post === undefined) {
-        response
-            .status(404)
-            .json({
-                error: "Il post non esiste",
-                result: null
-            });
-        return
-    }
     response.json({
         error: null,
         result: post
@@ -76,18 +63,7 @@ STORE
 ---------------------------------------------------------------------*/
 export function store(request, response) {
 
-    const receivedData = request.body || {};
-
-    if (!OBJcheck(receivedData)) {
-        response
-            .status(400)
-            .json({
-                error: "l'ogetto passato non rispetta i parametri richiesti",
-                result: null
-            })
-        return
-    }
-    const newPost = { ...defaultOBJ, ...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString()}
+    const newPost = { ...defaultOBJ, ...request.body, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString()}
     posts.push(newPost);
     response
         .status(201)
@@ -114,29 +90,7 @@ export function update(request, response) {
         return
     }; */
     
-    const slug = request.params.slug.trim();
-    const postIndex = posts.findIndex(post => post.slug === slug);
-    if (postIndex === -1) {
-        response
-            .status(404)
-            .json({
-                error: "il post che stai cercando di aggiornare non esiste",
-                result: null
-            });
-        return
-    }
-    const post = posts[postIndex];
-    const receivedData = request.body || {};
-    if (!OBJcheck(receivedData)) {
-        response
-            .status(400)
-            .json({
-                error: "l'ogetto passato non rispetta i parametri richiesti",
-                result: null
-            })
-        return
-    }
-    const updatedPost = { ...post, ...receivedData };
+    const updatedPost = { ...post, ...request.body };
     if (post.title !== updatedPost.title){
         updatedPost.slug = slugGenerator(updatedPost);
     }
@@ -178,17 +132,6 @@ export function destroy(request, response) {
             });
         return
     }; */
-    const slug = request.params.slug.trim();
-    const postIndex = posts.findIndex(post => post.slug === slug);
-    if (postIndex === -1) {
-        response
-            .status(404)
-            .json({
-                error: "il post che stai cercando di eliminare non esiste",
-                result: null
-            });
-        return
-    }
     posts.splice(postIndex, 1);
     response
         .json({

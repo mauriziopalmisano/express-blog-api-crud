@@ -5,7 +5,7 @@ export const idCheck = (id) => {
     return typeof id === "number" && !isNaN(id) && id > 0;
 }
 
-const objKeysCheck = (obj) => {
+const keyValidator = (obj) => {
     const chiaviDefaultOBJ = Object.keys(defaultOBJReceived);
     const chiaviObj = Object.keys(obj);
 
@@ -15,7 +15,7 @@ const objKeysCheck = (obj) => {
     return chiaviDefaultOBJ.every(chiave => obj.hasOwnProperty(chiave));
 }
 
-const objvaluescheck = (obj) => {
+const valueValidator = (obj) => {
     const { title, content, image, tags, prep_time } = obj;
 
     if (typeof title !== 'string' || title.trim() === '') return false;
@@ -31,9 +31,9 @@ const objvaluescheck = (obj) => {
 }
 
 
-export const OBJcheck = (obj) => {
-    if(!objKeysCheck(obj)) return false;
-    return objvaluescheck(obj);
+export const validator = (obj) => {
+    if(!keyValidator(obj)) return false;
+    return valueValidator(obj);
 }
 
 export const idGenerator = () => {
