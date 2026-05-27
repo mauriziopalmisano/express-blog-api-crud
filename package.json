@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node --env-file=.env server.js",
-    "watch": "node --watch --env-file=./utils/.env server.js"
+    "watch": "node --watch --env-file=.env server.js"
   },
   "keywords": [],
   "author": "Luigi Pirandello",
@@ -13,6 +13,10 @@
   "packageManager": "pnpm@10.33.2",
   "type": "module",
   "dependencies": {
-    "express": "^5.2.1"
+    "@langchain/anthropic": "^1.4.0",
+    "express": "^5.2.1",
+    "langchain": "^1.4.2",
+    "nodemailer": "^8.0.9",
+    "zod": "^4.4.3"
   }
 }

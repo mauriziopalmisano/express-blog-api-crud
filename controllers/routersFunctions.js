@@ -7,7 +7,6 @@ import { defaultOBJ } from "../data/ricettePosts.js";
 INDEX
 ---------------------------------------------------------------------*/
 export function index(request, response) {
- throw new Error('Eeeeeeeh abbiamo superato il kilowatt')
     const { tag, maxPrepTime } = request.query;
     const maxPrepTimeChecked = Number(maxPrepTime.trim());
     let filtredPosts = [...posts];
@@ -52,7 +51,7 @@ export function show(request, response) {
     }; */
     response.json({
         error: null,
-        result: post
+        result: request.postfound
     });
 }
 
@@ -80,7 +79,7 @@ UPDATE
 ---------------------------------------------------------------------*/
 export function update(request, response) {
     /*const id = Number(request.params.id);
-     if (!idCheck(id)) {
+    if (!idCheck(id)) {
         response
             .status(400)
             .json({
@@ -90,7 +89,7 @@ export function update(request, response) {
         return
     }; */
     
-    const updatedPost = { ...post, ...request.body };
+    const updatedPost = { ...request.postfound, ...request.body };
     if (post.title !== updatedPost.title){
         updatedPost.slug = slugGenerator(updatedPost);
     }
@@ -132,7 +131,7 @@ export function destroy(request, response) {
             });
         return
     }; */
-    posts.splice(postIndex, 1);
+    posts.splice(request.postIndex, 1);
     response
         .json({
             error: null,

@@ -13,7 +13,9 @@ function paramsRouter(request, response, next){
             });
         return
     }
+    const postindex = posts.findIndex(post => post.slug === slug);
         request.postfound = post;
+        request.postindex = postindex;
         next();
 
 
