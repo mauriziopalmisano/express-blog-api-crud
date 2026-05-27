@@ -1,5 +1,5 @@
 import { posts } from "../data/ricettePosts.js";
-import { idCheck, idGenerator, OBJcheck, slugCheck, slugGenerator } from "../functions/function.js";
+import { idCheck, idGenerator, OBJcheck, slugGenerator } from "../functions/function.js";
 import { defaultOBJ } from "../data/ricettePosts.js";
 
 
@@ -7,7 +7,7 @@ import { defaultOBJ } from "../data/ricettePosts.js";
 INDEX
 ---------------------------------------------------------------------*/
 export function index(request, response) {
-
+ throw new Error('Eeeeeeeh abbiamo superato il kilowatt')
     const { tag, maxPrepTime } = request.query;
     const maxPrepTimeChecked = Number(maxPrepTime.trim());
     let filtredPosts = [...posts];
@@ -87,12 +87,8 @@ export function store(request, response) {
             })
         return
     }
-
-    const newPost = { ...defaultOBJ, ...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString() }
-
+    const newPost = { ...defaultOBJ, ...receivedData, id: idGenerator(), slug: slugGenerator(receivedData), created_at: new Date().toISOString()}
     posts.push(newPost);
-
-
     response
         .status(201)
         .json({
@@ -107,9 +103,8 @@ export function store(request, response) {
 UPDATE
 ---------------------------------------------------------------------*/
 export function update(request, response) {
-    //const id = Number(request.params.id);
-
-    /* if (!idCheck(id)) {
+    /*const id = Number(request.params.id);
+     if (!idCheck(id)) {
         response
             .status(400)
             .json({
@@ -120,8 +115,6 @@ export function update(request, response) {
     }; */
     
     const slug = request.params.slug.trim();
-
-
     const postIndex = posts.findIndex(post => post.slug === slug);
     if (postIndex === -1) {
         response
@@ -132,10 +125,8 @@ export function update(request, response) {
             });
         return
     }
-
     const post = posts[postIndex];
     const receivedData = request.body || {};
-
     if (!OBJcheck(receivedData)) {
         response
             .status(400)
@@ -150,7 +141,6 @@ export function update(request, response) {
         updatedPost.slug = slugGenerator(updatedPost);
     }
     posts.splice(postIndex, 1, updatedPost);
-
     response
         .json({
             error: null,
@@ -188,9 +178,7 @@ export function destroy(request, response) {
             });
         return
     }; */
-
     const slug = request.params.slug.trim();
-
     const postIndex = posts.findIndex(post => post.slug === slug);
     if (postIndex === -1) {
         response
@@ -201,7 +189,6 @@ export function destroy(request, response) {
             });
         return
     }
-
     posts.splice(postIndex, 1);
     response
         .json({
